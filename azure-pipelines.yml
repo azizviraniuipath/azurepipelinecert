@@ -19,22 +19,10 @@ steps:
     traceLevel: 'Information'
 
 - task: DownloadSecureFile@1
-  name: caCertificate
-  displayName: 'Download CA certificate'
   inputs:
     secureFile: 'NuGetTestDeveloper1.pfx'
 
-- script: |
-    echo Installing $(caCertificate.secureFilePath)
-    sudo chown root:root $(caCertificate.secureFilePath)
-    sudo chmod a+r $(caCertificate.secureFilePath)
-    sudo ln -s -t /etc/ssl/certs/ $(caCertificate.secureFilePath)
 
-- task: NuGetCommand@2
-  displayName: 'Signing certificate'
-  inputs:
-    command: 'custom'
-    arguments: 'nuget sign $(Build.ArtifactStagingDirectory)\Output -CertificatePath .\..\NuGetTestDeveloper1.pfx -CertificatePassword 1234'
 
 - task: UiPathDeploy@4
   inputs:
