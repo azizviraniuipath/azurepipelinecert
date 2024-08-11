@@ -18,14 +18,17 @@ steps:
     outputPath: '$(Build.ArtifactStagingDirectory)\Output'
     traceLevel: 'Information'
 
-# Download secure file v1
-# Download a secure file to the agent machine.
 - task: DownloadSecureFile@1
-  displayName: 'Download Secure File-Cert'
+  name: caCertificate
+  displayName: 'Download CA certificate'
   inputs:
-    secureFile: "NuGetTestDeveloper1.pfx" # string. Required. Secure File"". 
-    #retryCount: '8' # string. Retry Count. Default: 8.
-    #socketTimeout: # string. Socket Timeout.
+    secureFile: 'NuGetTestDeveloper1.pfx'
+
+- script: |
+    echo Installing $(caCertificate.secureFilePath)
+    sudo chown root:root $(caCertificate.secureFilePath)
+    sudo chmod a+r $(caCertificate.secureFilePath)
+    sudo ln -s -t /etc/ssl/certs/ $(caCertificate.secureFilePath)
 
 - task: NuGetCommand@2
   displayName: 'Signing certificate'
