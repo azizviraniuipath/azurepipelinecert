@@ -17,8 +17,10 @@ steps:
     orchestratorConnection: 'UiPathOrchestratorConnection'
     outputPath: '$(Build.ArtifactStagingDirectory)\Output'
     traceLevel: 'Information'
+
 - task: UiPathDeploy@4
   inputs:
     orchestratorConnection: 'UiPathOrchestratorConnection'
     packagesPath: '$(Build.ArtifactStagingDirectory)\Output'
     folderName: 'AzureDevOpsFolder'
+    traceLevel: 'Information'
