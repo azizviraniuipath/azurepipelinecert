@@ -18,6 +18,21 @@ steps:
     outputPath: '$(Build.ArtifactStagingDirectory)\Output'
     traceLevel: 'Information'
 
+# Download secure file v1
+# Download a secure file to the agent machine.
+- task: DownloadSecureFile@1
+  displayName: 'Download Secure File-Cert'
+  inputs:
+    secureFile: "NuGetTestDeveloper1.pfx" # string. Required. Secure File"". 
+    #retryCount: '8' # string. Retry Count. Default: 8.
+    #socketTimeout: # string. Socket Timeout.
+
+- task: NuGetCommand@2
+  displayName: 'Signing certificate'
+  inputs:
+    command: 'custom'
+    arguments: 'dotnet nuget sign $(Build.ArtifactStagingDirectory)/**/*.nupkg --certificate-path $(mySecureFile.secureFilePath) --certificate-password 1234'
+
 - task: UiPathDeploy@4
   inputs:
     orchestratorConnection: 'UiPathOrchestratorConnection'
