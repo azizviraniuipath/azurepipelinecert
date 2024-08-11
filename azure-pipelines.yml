@@ -31,7 +31,7 @@ steps:
   displayName: 'Signing certificate'
   inputs:
     command: 'custom'
-    arguments: 'dotnet nuget sign $(Build.ArtifactStagingDirectory)/**/*.nupkg --certificate-path $(mySecureFile.secureFilePath) --certificate-password 1234'
+    arguments: 'nuget sign $(Build.ArtifactStagingDirectory)\Output -CertificatePath .\..\NuGetTestDeveloper1.pfx -CertificatePassword 1234'
 
 - task: UiPathDeploy@4
   inputs:
